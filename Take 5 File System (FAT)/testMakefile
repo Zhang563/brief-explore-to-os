@@ -1,0 +1,31 @@
+CC = gcc
+CFLAGS = -Wall -Werror -g  # Add -Werror to treat warnings as errors
+OBJS = disk.o fs.o main.o
+TEST_OBJS = test_main.o  # Object files for the test target
+TARGET = my_program
+TEST_TARGET = test_program  # Test executable name
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
+
+test: $(TEST_TARGET)
+
+$(TEST_TARGET): $(TEST_OBJS) $(OBJS)
+	$(CC) $(CFLAGS) $(TEST_OBJS) $(OBJS) -o $(TEST_TARGET)
+
+disk.o: disk.c
+	$(CC) $(CFLAGS) -c disk.c
+
+fs.o: fs.c
+	$(CC) $(CFLAGS) -c fs.c
+
+main.o: main.c
+	$(CC) $(CFLAGS) -c main.c
+
+test_main.o: test_main.c
+	$(CC) $(CFLAGS) -c test_main.c
+
+clean:
+	rm -f $(OBJS) $(TARGET) $(TEST_OBJS) $(TEST_TARGET)
